@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
   SDL_Renderer *renderer = NULL; /* main renderer pointer */
 
   window = SDL_CreateWindow( /* create main window */
-    "Pitch Detector",                  /* window title */
+    "SDL2_Project_Template",                  /* window title */
     SDL_WINDOWPOS_UNDEFINED,           /* initial x position */
     SDL_WINDOWPOS_UNDEFINED,           /* initial y position */
     WINDOW_DEF_W,                               /* width, in pixels */
