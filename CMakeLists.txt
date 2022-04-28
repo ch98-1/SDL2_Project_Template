@@ -48,9 +48,6 @@ endif()
 if (PKGCONFIG_FOUND) # Switch build between PkgConfig vs find_package
 	# Create the executable
 	include_directories (
-		"${PROJECT_SOURCE_DIR}/src"
-		"${PROJECT_SOURCE_DIR}/src/kissfft"
-		"${PROJECT_SOURCE_DIR}/src/render_helper"
 		${SDL2_INCLUDE_DIRS}
 		${SDL2IMAGE_INCLUDE_DIRS}
 		${SDL2TTF_INCLUDE_DIRS}
@@ -64,9 +61,6 @@ if (PKGCONFIG_FOUND) # Switch build between PkgConfig vs find_package
 else(PKGCONFIG_FOUND) # if there is no PkgConfig
 	# Create the executable
 	include_directories (
-		"${PROJECT_SOURCE_DIR}/src"
-		"${PROJECT_SOURCE_DIR}/src/kissfft"
-		"${PROJECT_SOURCE_DIR}/src/render_helper"
 		${SDL2_INCLUDE_DIR}
 		${SDL2_IMAGE_INCLUDE_DIRS}
 		${SDL2_TTF_INCLUDE_DIRS}
@@ -79,6 +73,12 @@ else(PKGCONFIG_FOUND) # if there is no PkgConfig
 		)
 endif(PKGCONFIG_FOUND)
 
+# include directories for the base Project
+include_directories (
+	"${PROJECT_SOURCE_DIR}/src"
+	"${PROJECT_SOURCE_DIR}/src/kissfft"
+	"${PROJECT_SOURCE_DIR}/src/render_helper"
+	)
 
 
 # add math and threads library if its linux
@@ -86,6 +86,12 @@ if (UNIX)
   find_package (Threads)
   target_link_libraries (SDL2_Project_Template m ${CMAKE_THREAD_LIBS_INIT})
 endif (UNIX)
+
+# add dirent directory if MSVC
+if (MSVC)
+  include_directories ("${PROJECT_SOURCE_DIR}/src/dirent")
+endif (MSVC)
+
 
 
 
