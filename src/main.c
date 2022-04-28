@@ -88,14 +88,32 @@ int main(int argc, char* argv[])
   if(!font) { /* check if font actually got loaded */
     printf("TTF_OpenFont: %s\n", TTF_GetError()); /* print out the error if it fails */
     exit(EXIT_FAILURE); /* shut down the program as it might need a text output in some places */
-}
+  }
+
+
+  /* generate the path for the image */
+  char image_dir[DIR_LENGTH];
+  strcpy(image_dir, data_path);
+  strcat(image_dir, "bouncy_image.png");
+
+  SDL_Texture *bouncy_image = get_image_texture(renderer, image_dir); /* load the image in to a texture */
+
+  double pos_x = 0.2; /* position and direction of bouncy image */
+  double pos_y = 0.5;
+  int dir_x = 1;
+  int dir_y = 1;
+
+  int mouse_click_x = 0;
+  int mouse_click_y = 0;
+  int mouse_clicked = 0;
+
 
   /* colors being used */
   SDL_Color text_color={200,200,200,255};
   SDL_Color background_color={50,50,50,255};
 
-  Uint64 SDL_time_Hz = SDL_GetPerformanceFrequency();
 
+  Uint64 SDL_time_Hz = SDL_GetPerformanceFrequency(); /* how many count per second on SDL_GetPerformanceCounter */
 
   SDL_Event e; /* variable that gets filled with events */
   int quit = 0; /* if quitting or not */
@@ -105,6 +123,7 @@ int main(int argc, char* argv[])
   Uint64 fps_display_t = SDL_GetPerformanceCounter(); /* time for fps display */
   Uint64 frame_delay_t = SDL_GetPerformanceCounter(); /* time for calculation of delay between frames */
 
+  double loop_time = 0; /* time taken to complete the loop */
   /* end of program initialisations*/
 
 
@@ -119,6 +138,12 @@ int main(int argc, char* argv[])
       /* process the events here */
       if (e.type == SDL_QUIT){ /* if there is a quit event */
           quit = 1; /* set the quit flag to 1 */
+      }
+
+      if (e.type == SDL_MOUSEBUTTONDOWN){ /* if there is a mouse button release event */
+          mouse_clicked = 1; /* set the mosue clicked flag to 1 */
+          mouse_click_x = e.button.x; /* set the current mouse coordinates */
+          mouse_click_y = e.button.y; /* set the current mouse coordinates */
       }
       /* end of event processing */
     }
@@ -135,12 +160,56 @@ int main(int argc, char* argv[])
 
 
 
-    double loop_time = ((SDL_GetPerformanceCounter() - frame_delay_t)/(double)SDL_time_Hz);/* calculate the time it took to do the loop */
-    double loop_delay = (1/(double)MAX_FRAMERATE) - loop_time; /* calculate the amount of delay needed to keep the loop within max framerate */
+    /* start of main program processing and drawing */
+    int texture_w, texture_h;
+    SDL_QueryTexture(bouncy_image, NULL, NULL, &texture_w, &texture_h); /* get size of bouncy image */
+
+    double range_x = (display_w - texture_w)/(double)display_w; /* calculate the allowable range of the image for the current display size */
+    double range_y = (display_h - texture_h)/(double)display_h;
+
+    double move_x = (BOUNCE_SPEED/(double)(display_w - texture_w)) * loop_time * (double)dir_x; /* calculate the distance to move in each direction relative to display size */
+    double move_y = (BOUNCE_SPEED/(double)(display_h - texture_h)) * loop_time * (double)dir_y;
+
+    pos_x += move_x; /* move the calculated distance */
+    pos_y += move_y;
+
+    if(pos_x > 1){ /*bouncing code for each border */
+      dir_x = -1;
+    }
+    if(pos_y > 1){
+      dir_y = -1;
+    }
+    if(pos_x < 0){
+      dir_x = 1;
+    }
+    if(pos_y < 0){
+      dir_y = 1;
+    }
+
+    render_copy_relative_tl(renderer, bouncy_image, pos_x * range_x, pos_y * range_y);
+
+    if(mouse_clicked){ /* handle mouse click */
+      if ((mouse_click_x > display_w * pos_x * range_x) &&
+          (mouse_click_x < display_w * pos_x * range_x + texture_w) &&
+          (mouse_click_y > display_h * pos_y * range_y) &&
+          (mouse_click_y < display_h * pos_y * range_y + texture_h)){ /* if clicked within range of image */
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Image Clicked", "You clicked the bouncy image!", window); /* show message box saying you clicked the bouncy image */
+      }
+      frame_delay_t = SDL_GetPerformanceCounter(); /* reset last time as message pauses everything */
+      mouse_clicked = 0; /* reset mouse click */
+    }
+    /* end of main program processing and drawing */
+
+
+
+
+    double loop_delay_time = ((SDL_GetPerformanceCounter() - frame_delay_t)/(double)SDL_time_Hz);/* calculate the time it took to do the loop minus the previous delay */
+    double loop_delay = (1/(double)MAX_FRAMERATE) - loop_delay_time; /* calculate the amount of delay needed to keep the loop within max framerate */
     /* add delay if loop is going too fast */
     if ( loop_delay >= 0 ) {
       SDL_Delay((Uint32)round(loop_delay*1000));
     }
+    loop_time = ((SDL_GetPerformanceCounter() - frame_delay_t)/(double)SDL_time_Hz);/* calculate the time it took to do the loop */
     frame_delay_t = SDL_GetPerformanceCounter();
 
     /* calculate fps every 30 loops */
@@ -167,7 +236,7 @@ int main(int argc, char* argv[])
 
 
   /* start of program cleanup. edit here to your programs needs*/
-
+  SDL_DestroyTexture(bouncy_image); /* destroy bouncy image texture */
   TTF_CloseFont(font); /* close the font opened previously */
   font=NULL; /* setting it to NULL just in case */
 
