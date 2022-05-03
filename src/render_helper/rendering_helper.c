@@ -11,10 +11,10 @@ SDL_Texture* get_image_texture(SDL_Renderer* renderer, const char *file){
 
 
 
-/* render copy with coordinates on display */
+/* render copy with coordinates on display. Returns SDL_Rect of the rendered output including background */
 
 /* render texture with absolute coordinate on top left */
-int render_copy_absolute_tl(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y){
+SDL_Rect render_copy_absolute_tl(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y){
   int w, h;
   SDL_QueryTexture(texture, NULL, NULL, &w, &h);/* get texture size*/
 
@@ -25,11 +25,11 @@ int render_copy_absolute_tl(SDL_Renderer* renderer, SDL_Texture* texture, int x,
   dstrect.h = h;
 
   SDL_RenderCopy(renderer, texture, NULL, &dstrect);
-  return 0;
+  return dstrect;
 }
 
 /* render texture with absolute coordinate on top right */
-int render_copy_absolute_tr(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y){
+SDL_Rect render_copy_absolute_tr(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y){
   int w, h;
   SDL_QueryTexture(texture, NULL, NULL, &w, &h);/* get texture size*/
 
@@ -40,11 +40,11 @@ int render_copy_absolute_tr(SDL_Renderer* renderer, SDL_Texture* texture, int x,
   dstrect.h = h;
 
   SDL_RenderCopy(renderer, texture, NULL, &dstrect);
-  return 0;
+  return dstrect;
 }
 
 /* render texture with absolute coordinate on bottom left */
-int render_copy_absolute_bl(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y){
+SDL_Rect render_copy_absolute_bl(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y){
   int w, h;
   SDL_QueryTexture(texture, NULL, NULL, &w, &h);/* get texture size*/
 
@@ -55,11 +55,11 @@ int render_copy_absolute_bl(SDL_Renderer* renderer, SDL_Texture* texture, int x,
   dstrect.h = h;
 
   SDL_RenderCopy(renderer, texture, NULL, &dstrect);
-  return 0;
+  return dstrect;
 }
 
 /* render texture with absolute coordinate on bottom right */
-int render_copy_absolute_br(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y){
+SDL_Rect render_copy_absolute_br(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y){
   int w, h;
   SDL_QueryTexture(texture, NULL, NULL, &w, &h);/* get texture size*/
 
@@ -70,11 +70,11 @@ int render_copy_absolute_br(SDL_Renderer* renderer, SDL_Texture* texture, int x,
   dstrect.h = h;
 
   SDL_RenderCopy(renderer, texture, NULL, &dstrect);
-  return 0;
+  return dstrect;
 }
 
 /* render texture with absolute coordinate on center */
-int render_copy_absolute_c(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y){
+SDL_Rect render_copy_absolute_c(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y){
   int w, h;
   SDL_QueryTexture(texture, NULL, NULL, &w, &h);/* get texture size*/
 
@@ -85,70 +85,65 @@ int render_copy_absolute_c(SDL_Renderer* renderer, SDL_Texture* texture, int x, 
   dstrect.h = h;
 
   SDL_RenderCopy(renderer, texture, NULL, &dstrect);
-  return 0;
+  return dstrect;
 }
 
 
 /* render copy with coordinates in float from 0 to 1 */
 
 /* render texture with relative coordinate on top left */
-int render_copy_relative_tl(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y){
+SDL_Rect render_copy_relative_tl(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y){
   int display_w, display_h;
   SDL_GetRendererOutputSize(renderer, &display_w, &display_h);
   int ax = x*display_w; /* calculate absolute coordinates */
   int ay = y*display_h;
 
   /* call absolute render copy */
-  render_copy_absolute_tl(renderer,texture, ax, ay);
-  return 0;
+  return render_copy_absolute_tl(renderer,texture, ax, ay);
 }
 
 /* render texture with relative coordinate on top right */
-int render_copy_relative_tr(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y){
+SDL_Rect render_copy_relative_tr(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y){
   int display_w, display_h;
   SDL_GetRendererOutputSize(renderer, &display_w, &display_h);
   int ax = x*display_w; /* calculate absolute coordinates */
   int ay = y*display_h;
 
   /* call absolute render copy */
-  render_copy_absolute_tr(renderer,texture, ax, ay);
-  return 0;
+  return render_copy_absolute_tr(renderer,texture, ax, ay);
 }
 
 /* render texture with relative coordinate on bottom left */
-int render_copy_relative_bl(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y){
+SDL_Rect render_copy_relative_bl(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y){
   int display_w, display_h;
   SDL_GetRendererOutputSize(renderer, &display_w, &display_h);
   int ax = x*display_w; /* calculate absolute coordinates */
   int ay = y*display_h;
 
   /* call absolute render copy */
-  render_copy_absolute_bl(renderer,texture, ax, ay);
-  return 0;
+  return render_copy_absolute_bl(renderer,texture, ax, ay);
 }
 
 /* render texture with relative coordinate on bottom right */
-int render_copy_relative_br(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y){
+SDL_Rect render_copy_relative_br(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y){
   int display_w, display_h;
   SDL_GetRendererOutputSize(renderer, &display_w, &display_h);
   int ax = x*display_w; /* calculate absolute coordinates */
   int ay = y*display_h;
 
   /* call absolute render copy */
-  render_copy_absolute_br(renderer,texture, ax, ay);
-  return 0;
+  return render_copy_absolute_br(renderer,texture, ax, ay);
 }
 
 /* render texture with relative coordinate on center */
-int render_copy_relative_c(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y){
+SDL_Rect render_copy_relative_c(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y){
   int display_w, display_h;
   SDL_GetRendererOutputSize(renderer, &display_w, &display_h);
   int ax = x*display_w; /* calculate absolute coordinates */
   int ay = y*display_h;
 
   /* call absolute render copy */
-  render_copy_absolute_c(renderer, texture, ax, ay);
-  return 0;
+  return render_copy_absolute_c(renderer, texture, ax, ay);
 }
 
 
@@ -158,7 +153,7 @@ int render_copy_relative_c(SDL_Renderer* renderer, SDL_Texture* texture, float x
 /* render copy with coordinates on display */
 
 /* render texture with absolute coordinate on top left */
-int render_copy_absolute_fb_tl(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+SDL_Rect render_copy_absolute_fb_tl(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
   int w, h;
   SDL_QueryTexture(texture, NULL, NULL, &w, &h);/* get texture size*/
 
@@ -182,11 +177,11 @@ int render_copy_absolute_fb_tl(SDL_Renderer* renderer, SDL_Texture* texture, int
 
 
   SDL_RenderCopy(renderer, texture, NULL, &dstrect);
-  return 0;
+  return dstrectb;
 }
 
 /* render texture with absolute coordinate on top right */
-int render_copy_absolute_fb_tr(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+SDL_Rect render_copy_absolute_fb_tr(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
   int w, h;
   SDL_QueryTexture(texture, NULL, NULL, &w, &h);/* get texture size*/
 
@@ -209,11 +204,11 @@ int render_copy_absolute_fb_tr(SDL_Renderer* renderer, SDL_Texture* texture, int
   SDL_SetRenderDrawColor(renderer, or, og, ob, oa); /* restore old color */
 
   SDL_RenderCopy(renderer, texture, NULL, &dstrect);
-  return 0;
+  return dstrectb;
 }
 
 /* render texture with absolute coordinate on bottom left */
-int render_copy_absolute_fb_bl(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+SDL_Rect render_copy_absolute_fb_bl(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
   int w, h;
   SDL_QueryTexture(texture, NULL, NULL, &w, &h);/* get texture size*/
 
@@ -236,12 +231,12 @@ int render_copy_absolute_fb_bl(SDL_Renderer* renderer, SDL_Texture* texture, int
   SDL_SetRenderDrawColor(renderer, or, og, ob, oa); /* restore old color */
 
   SDL_RenderCopy(renderer, texture, NULL, &dstrect);
-  return 0;
+  return dstrectb;
 }
 
 
 /* render texture with absolute coordinate on bottom right */
-int render_copy_absolute_fb_br(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+SDL_Rect render_copy_absolute_fb_br(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
   int w, h;
   SDL_QueryTexture(texture, NULL, NULL, &w, &h);/* get texture size*/
 
@@ -264,11 +259,11 @@ int render_copy_absolute_fb_br(SDL_Renderer* renderer, SDL_Texture* texture, int
   SDL_SetRenderDrawColor(renderer, or, og, ob, oa); /* restore old color */
 
   SDL_RenderCopy(renderer, texture, NULL, &dstrect);
-  return 0;
+  return dstrectb;
 }
 
 /* render texture with absolute coordinate on center */
-int render_copy_absolute_fb_c(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+SDL_Rect render_copy_absolute_fb_c(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
   int w, h;
   SDL_QueryTexture(texture, NULL, NULL, &w, &h);/* get texture size*/
 
@@ -291,70 +286,65 @@ int render_copy_absolute_fb_c(SDL_Renderer* renderer, SDL_Texture* texture, int 
   SDL_SetRenderDrawColor(renderer, or, og, ob, oa); /* restore old color */
 
   SDL_RenderCopy(renderer, texture, NULL, &dstrect);
-  return 0;
+  return dstrectb;
 }
 
 
 /* render copy with coordinates in float from 0 to 1 */
 
 /* render texture with relative coordinate on top left */
-int render_copy_relative_fb_tl(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+SDL_Rect render_copy_relative_fb_tl(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
   int display_w, display_h;
   SDL_GetRendererOutputSize(renderer, &display_w, &display_h);
   int ax = x*display_w; /* calculate absolute coordinates */
   int ay = y*display_h;
 
   /* call absolute render copy */
-  render_copy_absolute_fb_tl(renderer, texture, ax, ay, r, g, b, a);
-  return 0;
+  return render_copy_absolute_fb_tl(renderer, texture, ax, ay, r, g, b, a);
 }
 
 /* render texture with relative coordinate on top right */
-int render_copy_relative_fb_tr(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+SDL_Rect render_copy_relative_fb_tr(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
   int display_w, display_h;
   SDL_GetRendererOutputSize(renderer, &display_w, &display_h);
   int ax = x*display_w; /* calculate absolute coordinates */
   int ay = y*display_h;
 
   /* call absolute render copy */
-  render_copy_absolute_fb_tr(renderer, texture, ax, ay, r, g, b, a);
-  return 0;
+  return render_copy_absolute_fb_tr(renderer, texture, ax, ay, r, g, b, a);
 }
 
 /* render texture with relative coordinate on bottom left */
-int render_copy_relative_fb_bl(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+SDL_Rect render_copy_relative_fb_bl(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
   int display_w, display_h;
   SDL_GetRendererOutputSize(renderer, &display_w, &display_h);
   int ax = x*display_w; /* calculate absolute coordinates */
   int ay = y*display_h;
 
   /* call absolute render copy */
-  render_copy_absolute_fb_bl(renderer, texture, ax, ay, r, g, b, a);
-  return 0;
+  return render_copy_absolute_fb_bl(renderer, texture, ax, ay, r, g, b, a);
 }
 
 /* render texture with relative coordinate on bottom right */
-int render_copy_relative_fb_br(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+SDL_Rect render_copy_relative_fb_br(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
   int display_w, display_h;
   SDL_GetRendererOutputSize(renderer, &display_w, &display_h);
   int ax = x*display_w; /* calculate absolute coordinates */
   int ay = y*display_h;
 
   /* call absolute render copy */
-  render_copy_absolute_fb_br(renderer, texture, ax, ay, r, g, b, a);
-  return 0;
+  return render_copy_absolute_fb_br(renderer, texture, ax, ay, r, g, b, a);
 }
 
 /* render texture with relative coordinate on center */
-int render_copy_relative_fb_c(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+SDL_Rect render_copy_relative_fb_c(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
   int display_w, display_h;
   SDL_GetRendererOutputSize(renderer, &display_w, &display_h);
   int ax = x*display_w; /* calculate absolute coordinates */
   int ay = y*display_h;
 
   /* call absolute render copy */
-  render_copy_absolute_fb_c(renderer, texture, ax, ay, r, g, b, a);
-  return 0;
+  return render_copy_absolute_fb_c(renderer, texture, ax, ay, r, g, b, a);
 }
 
 
@@ -363,7 +353,7 @@ int render_copy_relative_fb_c(SDL_Renderer* renderer, SDL_Texture* texture, floa
 /* render copy with coordinates on display */
 
 /* render texture with absolute coordinate on top left */
-int render_copy_absolute_ob_tl(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+SDL_Rect render_copy_absolute_ob_tl(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
   int w, h;
   SDL_QueryTexture(texture, NULL, NULL, &w, &h);/* get texture size*/
 
@@ -382,16 +372,16 @@ int render_copy_absolute_ob_tl(SDL_Renderer* renderer, SDL_Texture* texture, int
   Uint8 or, og, ob, oa; /* old render draw colors */
   SDL_GetRenderDrawColor(renderer, &or, &og, &ob, &oa); /* fill old color */
   SDL_SetRenderDrawColor(renderer, r, g, b, a); /* set new color */
-  SDL_RenderFillRect(renderer, &dstrectb); /* draw background rectangle */
+  SDL_RenderDrawRect(renderer, &dstrectb); /* draw background rectangle */
   SDL_SetRenderDrawColor(renderer, or, og, ob, oa); /* restore old color */
 
 
   SDL_RenderCopy(renderer, texture, NULL, &dstrect);
-  return 0;
+  return dstrectb;
 }
 
 /* render texture with absolute coordinate on top right */
-int render_copy_absolute_ob_tr(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+SDL_Rect render_copy_absolute_ob_tr(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
   int w, h;
   SDL_QueryTexture(texture, NULL, NULL, &w, &h);/* get texture size*/
 
@@ -414,11 +404,11 @@ int render_copy_absolute_ob_tr(SDL_Renderer* renderer, SDL_Texture* texture, int
   SDL_SetRenderDrawColor(renderer, or, og, ob, oa); /* restore old color */
 
   SDL_RenderCopy(renderer, texture, NULL, &dstrect);
-  return 0;
+  return dstrectb;
 }
 
 /* render texture with absolute coordinate on bottom left */
-int render_copy_absolute_ob_bl(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+SDL_Rect render_copy_absolute_ob_bl(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
   int w, h;
   SDL_QueryTexture(texture, NULL, NULL, &w, &h);/* get texture size*/
 
@@ -441,12 +431,12 @@ int render_copy_absolute_ob_bl(SDL_Renderer* renderer, SDL_Texture* texture, int
   SDL_SetRenderDrawColor(renderer, or, og, ob, oa); /* restore old color */
 
   SDL_RenderCopy(renderer, texture, NULL, &dstrect);
-  return 0;
+  return dstrectb;
 }
 
 
 /* render texture with absolute coordinate on bottom right */
-int render_copy_absolute_ob_br(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+SDL_Rect render_copy_absolute_ob_br(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
   int w, h;
   SDL_QueryTexture(texture, NULL, NULL, &w, &h);/* get texture size*/
 
@@ -469,11 +459,11 @@ int render_copy_absolute_ob_br(SDL_Renderer* renderer, SDL_Texture* texture, int
   SDL_SetRenderDrawColor(renderer, or, og, ob, oa); /* restore old color */
 
   SDL_RenderCopy(renderer, texture, NULL, &dstrect);
-  return 0;
+  return dstrectb;
 }
 
 /* render texture with absolute coordinate on center */
-int render_copy_absolute_ob_c(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+SDL_Rect render_copy_absolute_ob_c(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
   int w, h;
   SDL_QueryTexture(texture, NULL, NULL, &w, &h);/* get texture size*/
 
@@ -496,68 +486,63 @@ int render_copy_absolute_ob_c(SDL_Renderer* renderer, SDL_Texture* texture, int 
   SDL_SetRenderDrawColor(renderer, or, og, ob, oa); /* restore old color */
 
   SDL_RenderCopy(renderer, texture, NULL, &dstrect);
-  return 0;
+  return dstrectb;
 }
 
 
 /* render copy with coordinates in float from 0 to 1 */
 
 /* render texture with relative coordinate on top left */
-int render_copy_relative_ob_tl(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+SDL_Rect render_copy_relative_ob_tl(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
   int display_w, display_h;
   SDL_GetRendererOutputSize(renderer, &display_w, &display_h);
   int ax = x*display_w; /* calculate absolute coordinates */
   int ay = y*display_h;
 
   /* call absolute render copy */
-  render_copy_absolute_ob_tl(renderer, texture, ax, ay, r, g, b, a);
-  return 0;
+  return render_copy_absolute_ob_tl(renderer, texture, ax, ay, r, g, b, a);
 }
 
 /* render texture with relative coordinate on top right */
-int render_copy_relative_ob_tr(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+SDL_Rect render_copy_relative_ob_tr(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
   int display_w, display_h;
   SDL_GetRendererOutputSize(renderer, &display_w, &display_h);
   int ax = x*display_w; /* calculate absolute coordinates */
   int ay = y*display_h;
 
   /* call absolute render copy */
-  render_copy_absolute_ob_tr(renderer, texture, ax, ay, r, g, b, a);
-  return 0;
+  return render_copy_absolute_ob_tr(renderer, texture, ax, ay, r, g, b, a);
 }
 
 /* render texture with relative coordinate on bottom left */
-int render_copy_relative_ob_bl(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+SDL_Rect render_copy_relative_ob_bl(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
   int display_w, display_h;
   SDL_GetRendererOutputSize(renderer, &display_w, &display_h);
   int ax = x*display_w; /* calculate absolute coordinates */
   int ay = y*display_h;
 
   /* call absolute render copy */
-  render_copy_absolute_ob_bl(renderer, texture, ax, ay, r, g, b, a);
-  return 0;
+  return render_copy_absolute_ob_bl(renderer, texture, ax, ay, r, g, b, a);
 }
 
 /* render texture with relative coordinate on bottom right */
-int render_copy_relative_ob_br(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+SDL_Rect render_copy_relative_ob_br(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
   int display_w, display_h;
   SDL_GetRendererOutputSize(renderer, &display_w, &display_h);
   int ax = x*display_w; /* calculate absolute coordinates */
   int ay = y*display_h;
 
   /* call absolute render copy */
-  render_copy_absolute_ob_br(renderer, texture, ax, ay, r, g, b, a);
-  return 0;
+  return render_copy_absolute_ob_br(renderer, texture, ax, ay, r, g, b, a);
 }
 
 /* render texture with relative coordinate on center */
-int render_copy_relative_ob_c(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+SDL_Rect render_copy_relative_ob_c(SDL_Renderer* renderer, SDL_Texture* texture, float x, float y, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
   int display_w, display_h;
   SDL_GetRendererOutputSize(renderer, &display_w, &display_h);
   int ax = x*display_w; /* calculate absolute coordinates */
   int ay = y*display_h;
 
   /* call absolute render copy */
-  render_copy_absolute_ob_c(renderer, texture, ax, ay, r, g, b, a);
-  return 0;
+  return render_copy_absolute_ob_c(renderer, texture, ax, ay, r, g, b, a);
 }

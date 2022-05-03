@@ -186,13 +186,10 @@ int main(int argc, char* argv[])
       dir_y = 1;
     }
 
-    render_copy_relative_tl(renderer, bouncy_image, pos_x * range_x, pos_y * range_y);
+    SDL_Rect dstrect = render_copy_relative_tl(renderer, bouncy_image, pos_x * range_x, pos_y * range_y);
 
     if(mouse_clicked){ /* handle mouse click */
-      if ((mouse_click_x > display_w * pos_x * range_x) &&
-          (mouse_click_x < display_w * pos_x * range_x + texture_w) &&
-          (mouse_click_y > display_h * pos_y * range_y) &&
-          (mouse_click_y < display_h * pos_y * range_y + texture_h)){ /* if clicked within range of image */
+      if (SDL_PointInRect(&(SDL_Point){(int)mouse_click_x, (int)mouse_click_y}, &dstrect)){ /* if clicked within range of image */
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Image Clicked", "You clicked the bouncy image!", window); /* show message box saying you clicked the bouncy image */
       }
       frame_delay_t = SDL_GetPerformanceCounter(); /* reset last time as message pauses everything */
