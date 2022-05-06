@@ -78,6 +78,7 @@ include_directories (
 	"${PROJECT_SOURCE_DIR}/src"
 	"${PROJECT_SOURCE_DIR}/src/kissfft"
 	"${PROJECT_SOURCE_DIR}/src/render_helper"
+	"${PROJECT_SOURCE_DIR}/src/socket"
 	)
 
 

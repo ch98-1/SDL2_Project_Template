@@ -6,7 +6,9 @@
 #include <stdlib.h>
 #include <locale.h>
 
+/* compatability headers for dirent and Berkeley sockets */
 #include "dirent.h"
+#include "sockets.h"
 
 /* other libraries */
 #include "kiss_fft.h"
